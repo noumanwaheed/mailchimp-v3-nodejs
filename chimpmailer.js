@@ -21,13 +21,22 @@ class ChimpMailer {
                             'status': 'subscribed'
                         }).then(response => {
                             resolve(response);
+                        }).catch(err => {
+                            reject(err);
                         });
                     }
                     else {
                         resolve(response);
                     }
                 }).catch(err => {
-                    reject(err);
+                    self.mailchimp.post({path: `lists/${self.list_id}/members`}, {
+                        'email_address': email_address,
+                        'status': 'subscribed'
+                    }).then(response => {
+                        resolve(response);
+                    }).catch(err => {
+                        reject(err);
+                    });
                 });
             }
             catch(err){
